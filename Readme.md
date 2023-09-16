@@ -11,6 +11,7 @@ FastAPI로 진행하였고 /docs에서 train, predict 직접 테스트 가능.
 ☁️ utils 디렉토리에 학습 및 추론 도움 코드
 ☁️ model 디렉토리에 직접 모델링한 모델 클래스 
 
+😄 Log 파일 읽은 후, 토근화 하여 CSV 파일로 변경.
 😄 Train 후, model 생성.
 😄 생성된 모델을 이용하여 Predict.
 ```
