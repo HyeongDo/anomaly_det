@@ -15,7 +15,7 @@ def train_model(training_data):
     model = AnomalyDetectionModel(input_dim)
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
-    epochs = 100  # 적절한 에폭 수로 수정
+    epochs = 100
 
     X_train = scaler.fit_transform(training_data)
     train_dataset = TensorDataset(torch.tensor(X_train, dtype=torch.float32))
