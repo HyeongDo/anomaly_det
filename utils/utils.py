@@ -5,10 +5,16 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import torch.nn as nn
 import torch
+import re
 
 batch_size = 64
 
 scaler = StandardScaler()
+
+
+def tokenize_log_line(line):
+    tokens = line.split()
+    return tokens
 
 
 def train_model(training_data):
