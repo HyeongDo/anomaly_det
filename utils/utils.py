@@ -7,9 +7,10 @@ import torch.nn as nn
 import torch
 
 batch_size = 64
-threshold = 0.1
 
 scaler = StandardScaler()
+
+
 def train_model(training_data):
     input_dim = training_data.shape[1]
     model = AnomalyDetectionModel(input_dim)
@@ -21,7 +22,6 @@ def train_model(training_data):
     train_dataset = TensorDataset(torch.tensor(X_train, dtype=torch.float32))
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-    # 모델 학습
     for epoch in range(epochs):
         for data in train_loader:
             inputs = data[0]
