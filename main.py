@@ -61,7 +61,7 @@ async def train(file: UploadFile):
         train_model(training_data)
         return {"message": "train Success."}
     except Exception as e:
-        return {"message": f'file read fail. {str(e)}'}
+        return {"message": f'train fail. {str(e)}'}
 
 
 @app.post("/predict")
@@ -86,5 +86,5 @@ async def predict(file: UploadFile, threshold: float):
 
         return {"anomalies": anomalies.tolist(), "mse_scores": mse_scores.tolist()}
     except Exception as e:
-        return {"message": f"predict. {str(e)}"}
+        return {"message": f"predict fail. {str(e)}"}
 
