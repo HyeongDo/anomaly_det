@@ -70,7 +70,7 @@ async def predict(file: UploadFile, threshold: float):
         학습과 추론은 같은 shape을 가지고 진행합니다.
         기준 컬럼은 date로 합니다.
     :param file: csv 파일
-    :param threshold: 이상 탐지 임계치 설정 [0,1]
+    :param threshold: 이상 탐지 임계치 설정
     :return: success {anomalies list, mse_scores list}
     '''
     try:
