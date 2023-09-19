@@ -22,7 +22,18 @@ async def read_and_tokenize_log(file: UploadFile):
         log_lines = log_text.strip().split('\n')
         log_tokens = [tokenize_log_line(line) for line in log_lines]
 
-        log_df = pd.DataFrame(log_tokens, columns=['date'] + [f'col{i}' for i in range(1, len(log_tokens[0]))])
+        max_col = -1
+        for row in range(0, len(log_tokens)):
+            if len(log_tokens[row]) > max_col:
+                max_col = len(log_tokens[row])
+
+        for row in range(0, len(log_tokens)):
+            add_col = max_col - len(log_tokens[row])
+            if add_col > 0:
+                for i in range(0, add_col):
+                    log_tokens[row].append(0)
+
+        log_df = pd.DataFrame(log_tokens, columns=['date'] + [f'col{i}' for i in range(1, max_col)])
 
         temp_csv_file = 'temp_log_data.csv'
         log_df.to_csv(temp_csv_file, index=False)
@@ -48,10 +59,9 @@ async def train(file: UploadFile):
 
         training_data = load_and_preprocess_data('training_data.csv')
         train_model(training_data)
+        return {"message": "train Success."}
     except Exception as e:
         return {"message": f'file read fail. {str(e)}'}
-    
-    return {"message": "train Success."}
 
 
 @app.post("/predict")
@@ -70,18 +80,11 @@ async def predict(file: UploadFile, threshold: float):
         inference_data = load_and_preprocess_data('inference_data.csv')
         input_dim = inference_data.shape[1]
 
-    except Exception as e:
-        return {"message": f"file read fail. {str(e)}"}
-
-    try:
         model = initialize_model(input_dim)
-    except Exception as e:
-        return {"message": f"model initialize fail. {str(e)}"}
-
-    try:
         X_inference = scaler.transform(inference_data)
         anomalies, mse_scores = inference(model, X_inference, threshold)
-    except Exception as e:
-        return {"message": f'predict fail.{str(e)}'}
 
-    return {"anomalies": anomalies.tolist(), "mse_scores": mse_scores.tolist()}
+        return {"anomalies": anomalies.tolist(), "mse_scores": mse_scores.tolist()}
+    except Exception as e:
+        return {"message": f"predict. {str(e)}"}
+

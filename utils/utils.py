@@ -14,7 +14,17 @@ scaler = StandardScaler()
 
 def tokenize_log_line(line):
     tokens = line.split()
-    return tokens
+
+    float_tokens = []
+    for index, token in enumerate(tokens):
+        if index == 0:
+            float_tokens.append(token)
+        else:
+            words = ""
+            for character in token:
+                words += str(ord(character))
+            float_tokens.append(float(''.join(words)))
+    return float_tokens
 
 
 def train_model(training_data):
